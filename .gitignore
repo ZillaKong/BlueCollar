@@ -1,0 +1,9 @@
+settings/db_creds.php
+
+/vendor/
+/node_modules/
+.env
+*.log
+.DS_Store
+.idea/
+.vscode/
