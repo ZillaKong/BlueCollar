@@ -4,9 +4,9 @@
     <meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>BlueCollar | Login</title>
-    <link rel="stylesheet" href="/../BlueCollar/css/BlueCollar/general.css">
-    <link rel="stylesheet" href="/../BlueCollar/css/index.css">
-    <link rel="stylesheet" href="/../BlueCollar/css/font.css">
+    <link rel="stylesheet" href="../css/BlueCollar/general.css">
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/font.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
 </head>
 <body>
     <div id="top-bar">
-        <a href="/../BlueCollar/index.php"><h1 id="logo-text">BlueCollar</h1></a>
+        <a href="../index.php"><h1 id="logo-text">BlueCollar</h1></a>
         <div id="login-links">
         <a href="../BlueCoallr.supply/register.php">For Suppliers</a>
         <a href="../login.php">Login</a>
@@ -68,7 +68,7 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="/../BlueCollar/js/register.js"></script>
+    <script src="../js/register.js"></script>
 
 </body>
 

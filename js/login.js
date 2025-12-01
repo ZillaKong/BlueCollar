@@ -21,7 +21,7 @@ $(document).ready(function() {
         }
         // If validation passes, submit the form
         $.ajax({
-            url: '/../BlueCollar/actions/login_user_actions.php',
+            url: '../actions/login_user_actions.php',
             type: 'POST',
             data: formData,
             success: function(response) {
@@ -29,11 +29,11 @@ $(document).ready(function() {
                 if (response.status === 'success') {
                     alert('Login successful!');
                     if (response.role === 'supplier') {
-                        window.location.href = '/../BlueCollar/view/BlueCoallr.supply/home.php'; // Redirect to dashboard page
+                        window.location.href = '../view/BlueCoallr.supply/home.php'; // Redirect to dashboard page
                     }else if (response.role === 'buyer') {
-                        window.location.href = '/../BlueCollar/view/BlueCollar/home.php'; // Redirect to dashboard page
+                        window.location.href = '../view/BlueCollar/home.php'; // Redirect to dashboard page
                     }else if (response.role === 'admin') {
-                        window.location.href = '/../BlueCollar/view/admin.php'; // Redirect to admin page
+                        window.location.href = '../view/admin.php'; // Redirect to admin page
                     }
                 } else {
                     alert('Login failed: ' + response.message);

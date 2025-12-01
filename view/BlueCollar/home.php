@@ -11,9 +11,9 @@ require_login();
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>BlueCollar</title>
-    <link rel="stylesheet" href="/../BlueCollar/css/index.css">
-    <link rel="stylesheet" href="/../BlueCollar/css/BlueCollar/general.css">
-    <link rel="stylesheet" href="/../BlueCollar/css/font.css">
+    <link rel="stylesheet" href="../../css/index.css">
+    <link rel="stylesheet" href="../../css/BlueCollar/general.css">
+    <link rel="stylesheet" href="../../css/font.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
@@ -23,11 +23,11 @@ require_login();
 </head>
 <body>
     <div id="top-bar">
-        <a href="/../BlueCollar/view/BlueCoallr/home.php"><h1 id="logo-text">BlueCollar</h1></a>
+        <a href="../BlueCollar/home.php"><h1 id="logo-text">BlueCollar</h1></a>
         <div id="login-links">
         <a href="../BlueCoallr.supply/register.php">For Suppliers</a>
         <a href="./profile.php"> Profile </a>
-        <a href="/../BlueCollar/actions/logout.php">Logout</a>
+        <a href="../../actions/logout.php">Logout</a>
         </div>
     </div>
     <div id="body-container">
@@ -40,12 +40,7 @@ require_login();
         <div id="display-container">
             <h3 id ="display-heading"> Explore Categories </h3>
             <div class="card-container">
-                <?php foreach ($categories as $category): ?>
-                    <div class="category-card" id="category">
-                        <img src="/../BlueCollar/assets/mechanic.jpg" alt="<?php echo htmlspecialchars($category['category_name']); ?>" class="category-image">
-                        <h4 class="category-title"><?php echo htmlspecialchars($category['category_name']); ?></h4>
-                    </div>
-                <?php endforeach; ?>
+                
             </div>
         </div>
         <div id="spacer"></div>
@@ -62,7 +57,7 @@ require_login();
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="/../BlueCollar/js/home.js"></script>
+    <script src="../../js/home.js"></script>
 
 </body>
 </html>

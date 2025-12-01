@@ -12,8 +12,8 @@ admin_only();
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>BlueCollar | Admin Access</title>
-        <link rel="stylesheet" href="/../BlueCollar/css/index.css">
-        <link rel="stylesheet" href="/../BlueCollar/css/font.css">
+        <link rel="stylesheet" href="../css/index.css">
+        <link rel="stylesheet" href="../css/font.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
@@ -23,7 +23,7 @@ admin_only();
     </head>
     <body>
         <div id="top-bar">
-            <a href="/../BlueCollar/index.php"><h1 id="logo-text">BlueCollar</h1></a>
+            <a href="../index.php"><h1 id="logo-text">BlueCollar</h1></a>
             <div><p>Admin Access</p></div>
             <div id="dev-links">
                 <a href="">Category</a>
@@ -107,8 +107,8 @@ admin_only();
         </div>
 
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-        <script src="/../BlueCollar/js/category.js"></script>
-        <script src="/../BlueCollar/js/product.js"></script>
-        <script src="/../BlueCollar/js/brands.js"></script>
+        <script src="../js/category.js"></script>
+        <script src="../js/product.js"></script>
+        <script src="../js/brands.js"></script>
     </body>
 </html>

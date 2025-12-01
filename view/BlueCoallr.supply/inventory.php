@@ -6,13 +6,14 @@ require_login();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>BlueCollar.Supply | Inventory Control</title>
-    <link rel="stylesheet" href="/../BlueCollar/css/index.css">
-    <link rel="stylesheet" href="/../BlueCollar/css/BlueCollar.supply/general.css">
-    <link rel="stylesheet" href="/../BlueCollar/css/font.css">
+    <link rel="stylesheet" href="../../css/index.css">
+    <link rel="stylesheet" href="../../css/BlueCollar.supply/general.css">
+    <link rel="stylesheet" href="../../css/font.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
@@ -20,13 +21,16 @@ require_login();
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <div id="top-bar">
-        <a href="/../BlueCollar/index.php"><h1 id="logo-text">BlueCollar</h1></a>
+        <a href="../index.php">
+            <h1 id="logo-text">BlueCollar</h1>
+        </a>
         <div id="login-links">
-        <a href="../BlueCollar/register.php">For Buyers</a>
-        <a href="./profile.php"> StoreFront </a>
-        <a href="/../BlueCollar/actions/logout.php">Logout</a>
+            <a href="../BlueCollar/register.php">For Buyers</a>
+            <a href="./profile.php"> StoreFront </a>
+            <a href="../../actions/logout.php">Logout</a>
         </div>
     </div>
     <div id="body-container">
@@ -62,16 +66,16 @@ require_login();
             </div>
             <table id="inventoryTable">
                 <thead>
-                <tr>
-                <th>Products ID</th>
-                <th>Product Name</th>
-                <th>Category</th>
-                <th>Brand</th>
-                <th>Description</th>
-                <th>Amount in Stock</th>
-                <th>Price</th>
-                <th>Actions</th>
-                </tr>
+                    <tr>
+                        <th>Products ID</th>
+                        <th>Product Name</th>
+                        <th>Category</th>
+                        <th>Brand</th>
+                        <th>Description</th>
+                        <th>Amount in Stock</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </tr>
                 </thead>
                 <tbody>
                 </tbody>
@@ -83,5 +87,5 @@ require_login();
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="/../BlueCollar/js/BlueCollar.supply/inventory.js"></script>
+    <script src="../../js/BlueCollar.supply/inventory.js"></script>
 </body>

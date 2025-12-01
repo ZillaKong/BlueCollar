@@ -15,7 +15,7 @@ function fetchProductData(){
                 $.each(data, function(index, product){
                     const escapedName = product.product_name.replace(/'/g, "\\'").replace(/"/g, '\\"');
                     const card = `<div class="category-card" id="category">
-                                    <img src="/../BlueCollar/assets/mechanic.jpg" alt="${escapedName}" class="category-image">
+                                    <img src="../assets/mechanic.jpg" alt="${escapedName}" class="category-image">
                                     <h4 class="category-title">${escapedName}</h4>
                                 </div>`;
                     productContainer.append(card);

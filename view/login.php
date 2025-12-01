@@ -5,9 +5,9 @@ get_logged_in_user_id();
 
 if (get_logged_in_user_id() !== null) {
     if (get_logged_in_user_role() === 'supplier'){
-        header("Location: /../BlueCollar/view/BlueCollar.supply/home.php");
+        header("Location: ../view/BlueCollar.supply/home.php");
     } else if (get_logged_in_user_role() === 'buyer'){
-        header("Location: /../BlueCollar/view/BlueCollar/home.php"); 
+        header("Location: ../view/BlueCollar/home.php"); 
     }
     else {
         logout_user();
@@ -34,7 +34,7 @@ if (get_logged_in_user_id() !== null) {
 </head>
 <body>
     <div id="top-bar">
-        <a href="/../BlueCollar/index.php"><h1 id="logo-text">BlueCollar</h1></a>
+        <a href="../index.php"><h1 id="logo-text">BlueCollar</h1></a>
         <div id="login-links">
         <a href="../view/BlueCollar/register.php">For Buyers</a>
         <a href="../view/BlueCollar.supply/register.php">For Suppliers</a>
@@ -66,7 +66,7 @@ if (get_logged_in_user_id() !== null) {
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="/../BlueCollar/js/login.js"></script>
+    <script src="../js/login.js"></script>
 
 </body>
 </html>

@@ -21,14 +21,14 @@ $(document).ready(function() {
         }   
         // If validation passes, submit the form
         $.ajax({
-            url: '/../BlueCollar/actions/register_user_actions.php',
+            url: '../actions/register_user_actions.php',
             type: 'POST',
             data: formData,
             success: function(response) {
                 // Handle success response
                 if (response.status === 'success') {
                 alert('Registration successful!');
-                window.location.href = '/../BlueCollar/view/login.php'; // Redirect to login page
+                window.location.href = '../view/login.php'; // Redirect to login page
                 } else {
                 alert('Registration failed: ' + response.message);
                 }
