@@ -1,0 +1,337 @@
+
+
+body{
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    background-color: #e2f2ff;
+    font-family: 'Quicksand', sans-serif;
+    color: #1B1212;
+}
+
+#body-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #e2f2ff;
+    overflow-y:scroll;
+    /* height: fit-content; */
+}
+
+h1{
+    font-size: 2.5rem;
+    font-family: "Audiowide", sans-serif;
+    color: #191970;
+}
+
+h3{
+    font-size: 1.5rem;
+    font-family: "Quicksand", sans-serif;
+    font-style: oblique;
+}   
+
+p{
+    font-size: 1rem;
+    font-family: "Quicksand", sans-serif;
+}
+
+button, input[type="submit"]{
+    font-family: "Quicksand", sans-serif;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+}
+
+input, select, textarea{
+    font-family: "Quicksand", sans-serif;
+    font-size: 1rem;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#welcome-box{
+    display: flex;
+    margin: 3.125rem auto;
+    padding: 1.25rem;
+    width: 70%;
+    background-color: #FAF9F6;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(27, 18, 18, 0.1);
+    gap: 2rem;
+}
+
+#welcome-box h1{
+    color: #191970;
+    text-align: center;
+}
+
+#welcome-box h3{
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+#welcome-box p{
+    font-size: 1.2rem;
+    line-height: 1.5;
+    text-align: center;
+}
+
+#welcome-box #divider{
+    width: 60%;
+    margin: 1rem auto;
+}
+
+#welcome-box #text-container{
+    display: flex;
+    justify-content: center; 
+    align-items: center;     
+
+}
+
+#top-bar{
+    display: flex;
+    background-color: #ffffff;
+    overflow: hidden;
+    text-align: center;
+    flex-direction: row;
+    box-shadow: 0 2px 4px rgba(27, 18, 18, 0.1);
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0.5rem;
+}
+
+a{
+    display: inline-block;
+    color: #1B1212;
+    text-align: center;
+    padding: 0.875 1rem;
+    text-decoration: none;
+    font-size: 17px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+a:hover{
+    color: #ADD8E6;
+}
+
+#top-bar #login-links{
+    display: flex;
+    gap: 1rem;
+}
+
+#stats {
+    display: flex;
+    justify-content: space-around;
+    margin: 1.25rem auto;
+    padding: 1rem;
+    width: 80%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(27, 18, 18, 0.1);
+    }
+
+.stat{
+    text-align: center;
+    font-family: "Quicksand", sans-serif;
+}
+
+#info-container{
+    display: flex;
+    justify-content: space-around;
+    margin: 1.25rem auto;
+    padding: 1rem;
+    width: 80%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(27, 18, 18, 0.1);
+    color: black;
+    }
+
+#bluecollar{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: "Quicksand", sans-serif;
+}
+
+#bluecollarsupply{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: "Quicksand", sans-serif;
+    background-color: #FAF9F6;
+}
+
+.info-box{
+    display: flex;
+    margin: 3.125rem auto;
+    padding: 1.25rem;
+    width: 45%;
+    background-color: #ADD8E6;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(27, 18, 18, 0.1);
+    gap: 2rem;
+}
+
+.info-box h2{
+    font-size: 2rem;
+    font-family: "Audiowide", sans-serif;
+    color: #191970;
+    text-align: center;
+}
+
+.info-box p{
+    font-size: 1.2rem;
+    line-height: 1.5;
+    text-align: center;
+}
+
+#get-started-button{
+    background-color: #191970;
+    color: #ffffff;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+#get-started-button:hover{
+    background-color: #ffffff;
+    color: #191970;
+    border: 0.15rem solid #191970;
+}
+
+#bluecollarsupply #get-started-button{
+    background-color: #454B1B;
+    color: #ffffff;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+#bluecollarsupply #get-started-button:hover{
+    background-color: #ffffff;
+    color: #454B1B;
+    border: 0.15rem solid #454B1B;
+}
+
+#bluecollarsupply h2{
+    color: #454B1B;
+}
+
+#span-p{
+    width: 80%;
+}
+
+#benefits {
+    list-style-type: none;
+    padding-left: 1.5rem;
+    display: flex;
+    justify-content: space-around;
+    margin: 1.25rem auto;
+    padding: 1rem;
+    width: 80%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(27, 18, 18, 0.1);
+}
+
+#footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #191970;
+    color: #ffffff;
+
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.category-card{
+    width: 80%;
+    border-radius: 5px;
+    padding: 1rem;
+    text-align: center;
+    cursor: pointer;
+}
+
+#display-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 100%;
+    margin-top: 1rem;
+    margin-left: 1rem;
+    text-align: left;
+}
+
+.card-container{
+    display: flex;
+    justify-content: space-around;
+    width: fit-content;
+    margin: 0 auto;
+}
+
+#spacer{
+    height: 2rem;
+}
+
+#account-management{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 1rem;
+    gap: 0.5rem;
+    padding: 0.75rem;
+}
+#supply-register-link{
+    font-weight: bold;
+    color: #454B1B;
+}
+
+#supply-register-link:hover{
+    color: #191970;
+}
+
+.form-button{
+    margin: 0.5rem 0;
+}
+
+#login-box{
+    background-color: #FAF9F6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#login-divider{
+    text-align: center;
+    width: 60%;
+    margin: 1rem auto;
+}
+
+#table-heading{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}

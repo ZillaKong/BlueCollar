@@ -1,0 +1,35 @@
+#register-box{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1rem;
+    gap: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(27, 18, 18, 0.1);
+}
+
+.category-card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: 1px solid #191970;
+    padding: 1rem;
+    gap: 1rem;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(27, 18, 18, 0.1);
+}
+
+.category-card:hover{
+    background-color: #ADD8E6;
+}
+
+button:hover, input[type="submit"]:hover{
+    background-color: #191970;
+    color: #ffffff;
+    border: #191970 1px solid;
+}
