@@ -28,7 +28,7 @@ $(document).ready(function() {
                 // Handle success response
                 if (response.status === 'success') {
                 alert('Registration successful!');
-                window.location.href = '../view/login.php'; // Redirect to login page
+                window.location.href = '../login.php'; // Redirect to login page
                 } else {
                 alert('Registration failed: ' + response.message);
                 }

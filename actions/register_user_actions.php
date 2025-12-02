@@ -1,10 +1,11 @@
 <?php
 
-header('Content-type: application/json');
+require_once '../settings/core.php';
 require_once '../controllers/register_user_controller.php';
 
+header('Content-type: application/json');
 
-if (isset($_SESSION['user_id'])) {
+if (is_logged_in()) {
     echo json_encode(['status' => 'error', 'message' => 'You are already logged in.']);
     exit;
 }
