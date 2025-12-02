@@ -1,9 +1,37 @@
-settings/db_creds.php
+# Database credentials - DO NOT COMMIT
+settings/db_cred.php
 
-/vendor/
-/node_modules/
+# Paystack configuration with API keys
+settings/paystack_config.php
+
+# Environment files
 .env
-*.log
-.DS_Store
+.env.local
+.env.*.local
+
+# IDE files
 .idea/
 .vscode/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+error_log
+
+# Dependency directories
+node_modules/
+vendor/
+
+# Uploaded files (if any)
+uploads/*
+!uploads/.gitkeep
+
+# Cache
+cache/
+*.cache
