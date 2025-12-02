@@ -4,6 +4,9 @@ settings/db_cred.php
 # Paystack configuration with API keys
 settings/paystack_config.php
 
+# readme
+Readme.md
+
 # Environment files
 .env
 .env.local
