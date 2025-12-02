@@ -118,7 +118,7 @@ class Products extends db_connection {
 
         $sql = "INSERT INTO final_products (product_code, product_name, category_id, brand_id, seller_id, storefront_id, product_description, stock_quantity, price) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->db->prepare($sql);
-        $stmt->bind_param("ssiiissid", $product_code, $product_name, $category_id, $brand_id, $seller_id, $store_id, $description, $stock_quantity, $price);
+        $stmt->bind_param("ssiiiisid", $product_code, $product_name, $category_id, $brand_id, $seller_id, $store_id, $description, $stock_quantity, $price);
 
         if ($stmt->execute()) {
             $stmt->close();
