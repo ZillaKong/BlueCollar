@@ -125,13 +125,13 @@ function displayStoreInfo(info){
 
 function displayCategories(categories){
     if (categories.length > 0) {
-        // Get primary category (first one)
+        // Get primary category (first one) - use .text() for safe rendering
         const primaryCategory = categories[0].category_name;
         $('#primary-category').text(primaryCategory);
         
-        // If there are more categories, list them
+        // If there are more categories, list them (escape each one)
         if (categories.length > 1) {
-            const otherCategories = categories.slice(1).map(c => c.category_name).join(', ');
+            const otherCategories = categories.slice(1).map(c => escapeHtml(c.category_name)).join(', ');
             $('#primary-category').append('<br><small>Also in: ' + otherCategories + '</small>');
         }
     } else {
@@ -149,17 +149,19 @@ function displayProducts(products){
         $('#products-count').text(products.length + ' product(s) available');
         
         $.each(products, function(index, product){
+            // Escape all user-generated content to prevent XSS
             const escapedName = escapeHtml(product.product_name);
-            const description = product.description || 'No description available';
+            const description = escapeHtml(product.description) || 'No description available';
             const price = product.price ? '$' + parseFloat(product.price).toFixed(2) : 'Price not set';
             const priceValue = parseFloat(product.price) || 0;
-            const brand = product.brand_name || 'Unknown brand';
-            const category = product.category_name || 'Uncategorized';
+            const brand = escapeHtml(product.brand_name) || 'Unknown brand';
+            const category = escapeHtml(product.category_name) || 'Uncategorized';
             const stockStatus = getStockStatus(product.stock_quantity, product.availability_status);
             const isInStock = product.availability_status === 'in stock' && product.stock_quantity > 0;
+            const productId = parseInt(product.product_id) || 0;
             
             // Check if product is already in order
-            const inOrder = window.orderContext.items.find(item => item.product_id == product.product_id);
+            const inOrder = window.orderContext.items.find(item => item.product_id == productId);
             const addedClass = inOrder ? 'added' : '';
             const btnText = inOrder ? '✓ In Order' : 'Add to Order';
             
@@ -172,7 +174,7 @@ function displayProducts(products){
                         <button class="qty-btn plus">+</button>
                     </div>
                     <button class="add-to-order-btn ${addedClass}" 
-                            data-product-id="${product.product_id}" 
+                            data-product-id="${productId}" 
                             data-price="${priceValue}"
                             ${!isInStock ? 'disabled' : ''}>
                         ${!isInStock ? 'Out of Stock' : btnText}
@@ -180,7 +182,7 @@ function displayProducts(products){
             }
             
             const card = `
-                <div class="product-card" data-product-id="${product.product_id}" 
+                <div class="product-card" data-product-id="${productId}" 
                      data-price="${priceValue}" 
                      data-brand="${brand.toLowerCase()}"
                      data-name="${escapedName.toLowerCase()}">
@@ -191,7 +193,7 @@ function displayProducts(products){
                         <h4 class="product-title">${escapedName}</h4>
                         <p class="product-brand">${brand}</p>
                         <p class="product-category-tag">${category}</p>
-                        <p class="product-description">${escapeHtml(description)}</p>
+                        <p class="product-description">${description}</p>
                         <div class="product-details">
                             <span class="product-price">${price}</span>
                             <span class="product-stock ${stockStatus.class}">${stockStatus.text}</span>
@@ -537,7 +539,7 @@ function verifyPayment(reference){
 }
 
 function showPaymentSuccess(data){
-    // Create success overlay
+    // Create success overlay - escape user data
     const successHtml = `
         <div id="payment-success-overlay" class="payment-success-overlay">
             <div class="success-content">
@@ -546,7 +548,7 @@ function showPaymentSuccess(data){
                 <p>Your order has been completed.</p>
                 <div class="success-details">
                     <p><strong>Amount Paid:</strong> $${parseFloat(data.amount).toFixed(2)}</p>
-                    <p><strong>Reference:</strong> ${data.reference}</p>
+                    <p><strong>Reference:</strong> ${escapeHtml(data.reference)}</p>
                 </div>
                 <button onclick="window.location.href='orders.php'" class="btn-primary">View My Orders</button>
             </div>

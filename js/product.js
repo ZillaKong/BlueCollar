@@ -1,5 +1,28 @@
+// HTML escape function to prevent XSS attacks
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
 $(document).ready(function(){
     fetchProductData();
+
+    // Use event delegation for edit/delete buttons (safer than inline onclick)
+    $(document).on('click', '.edit-product-btn', function(){
+        const id = $(this).data('id');
+        const name = $(this).data('name');
+        const catId = $(this).data('cat-id');
+        const brandId = $(this).data('brand-id');
+        const storeId = $(this).data('store-id');
+        editProduct(id, name, catId, brandId, storeId);
+    });
+
+    $(document).on('click', '.delete-product-btn', function(){
+        const id = $(this).data('id');
+        deleteProduct(id);
+    });
 });
 
 function fetchProductData(){
@@ -13,16 +36,25 @@ function fetchProductData(){
 
             if (data.length > 0){
                 $.each(data, function(index, product){
-                    const escapedName = product.product_name.replace(/'/g, "\\'").replace(/"/g, '\\"');
+                    const productId = parseInt(product.product_id) || 0;
+                    const productName = escapeHtml(product.product_name);
+                    const categoryId = parseInt(product.category_id) || 0;
+                    const brandId = parseInt(product.brand_id) || 0;
+                    const storeId = parseInt(product.store_id) || 0;
                     const row = `<tr>
-                            <td>${product.product_id}</td>
-                            <td>${escapedName}</td>
-                            <td>${product.category_id}</td>
-                            <td>${product.brand_id}</td>
-                            <td>${product.store_id}</td>
+                            <td>${productId}</td>
+                            <td>${productName}</td>
+                            <td>${categoryId}</td>
+                            <td>${brandId}</td>
+                            <td>${storeId}</td>
                             <td>
-                                <button onclick="editProduct(${product.product_id}, '${escapedName}', ${product.category_id}, ${product.brand_id}, ${product.store_id})">Update</button>
-                                <button onclick="deleteProduct(${product.product_id})">Delete</button>
+                                <button class="edit-product-btn" 
+                                        data-id="${productId}" 
+                                        data-name="${productName}" 
+                                        data-cat-id="${categoryId}" 
+                                        data-brand-id="${brandId}" 
+                                        data-store-id="${storeId}">Update</button>
+                                <button class="delete-product-btn" data-id="${productId}">Delete</button>
                             </td>
                         </tr>`;
                     tableBody.append(row);

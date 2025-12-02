@@ -1,5 +1,25 @@
+// HTML escape function to prevent XSS attacks
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
 $(document).ready(function(){
     fetchBrandData();
+
+    // Use event delegation for edit/delete buttons (safer than inline onclick)
+    $(document).on('click', '.edit-brand-btn', function(){
+        const id = $(this).data('id');
+        const name = $(this).data('name');
+        editBrand(id, name);
+    });
+
+    $(document).on('click', '.delete-brand-btn', function(){
+        const id = $(this).data('id');
+        deleteBrand(id);
+    });
 });
 
 function fetchBrandData(){
@@ -13,14 +33,16 @@ function fetchBrandData(){
 
             if (data.length > 0){
                 $.each(data, function(index, brand){
-                    const escapedName = brand.brand_name.replace(/'/g, "\\'").replace(/"/g, '\\"');
+                    const brandId = parseInt(brand.brand_id) || 0;
+                    const brandName = escapeHtml(brand.brand_name);
+                    const totalProducts = parseInt(brand.total_products) || 0;
                     const row = `<tr>
-                            <td>${brand.brand_id}</td>
-                            <td>${brand.brand_name}</td>
-                            <td>${brand.total_products}</td>
+                            <td>${brandId}</td>
+                            <td>${brandName}</td>
+                            <td>${totalProducts}</td>
                             <td>
-                                <button onclick="editBrand(${brand.brand_id}, '${escapedName}')">Update</button>
-                                <button onclick="deleteBrand(${brand.brand_id})">Delete</button>
+                                <button class="edit-brand-btn" data-id="${brandId}" data-name="${brandName}">Update</button>
+                                <button class="delete-brand-btn" data-id="${brandId}">Delete</button>
                             </td>
                         </tr>`;
                     tableBody.append(row);

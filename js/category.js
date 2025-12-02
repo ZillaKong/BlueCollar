@@ -1,3 +1,11 @@
+// HTML escape function to prevent XSS attacks
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
 $(document).ready(function(){
     fetchCategoryData();
 
@@ -40,6 +48,18 @@ $(document).ready(function(){
             alert('Please enter a category name.');
         }
     });
+
+    // Use event delegation for edit/delete buttons (safer than inline onclick)
+    $(document).on('click', '.edit-category-btn', function(){
+        const id = $(this).data('id');
+        const name = $(this).data('name');
+        editCategory(id, name);
+    });
+
+    $(document).on('click', '.delete-category-btn', function(){
+        const id = $(this).data('id');
+        deleteCategory(id);
+    });
 });
 
 function closeModal(){
@@ -58,13 +78,16 @@ function fetchCategoryData(){
 
             if (data.length > 0){
                 $.each(data, function(index, category){
+                    const catId = parseInt(category.category_id) || 0;
+                    const catName = escapeHtml(category.category_name);
+                    const totalProducts = parseInt(category.total_products) || 0;
                     const row = `<tr>
-                            <td>${category.category_id}</td>
-                            <td>${category.category_name}</td>
-                            <td>${category.total_products}</td>
+                            <td>${catId}</td>
+                            <td>${catName}</td>
+                            <td>${totalProducts}</td>
                             <td>
-                                <button onclick="editCategory(${category.category_id}, '${category.category_name}')">Update</button>
-                                <button onclick="deleteCategory(${category.category_id})">Delete</button>
+                                <button class="edit-category-btn" data-id="${catId}" data-name="${catName}">Update</button>
+                                <button class="delete-category-btn" data-id="${catId}">Delete</button>
                             </td>
                         </tr>`;
                     tableBody.append(row);

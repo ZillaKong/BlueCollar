@@ -1,3 +1,11 @@
+// HTML escape function to prevent XSS attacks
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
 $(document).ready(function(){
     fetchCategoryData();
     fetchProductData();
@@ -29,11 +37,12 @@ function fetchCategoryData(){
 
             if (data.length > 0){
                 $.each(data, function(index, category){
-                    const escapedName = category.category_name.replace(/'/g, "\\'").replace(/"/g, '\\"');
-                    const card = `<div class="category-card" data-category-id="${category.category_id}">
+                    const escapedName = escapeHtml(category.category_name);
+                    const categoryId = parseInt(category.category_id) || 0;
+                    const card = `<div class="category-card" data-category-id="${categoryId}">
                                     <div class="category-image-placeholder"><span>📁</span></div>
                                     <h4 class="category-title">${escapedName}</h4>
-                                    <p class="category-count">${category.total_products} products</p>
+                                    <p class="category-count">${parseInt(category.total_products) || 0} products</p>
                                 </div>`;
                     categoryContainer.append(card);
                 });
@@ -60,8 +69,9 @@ function fetchProductData(){
 
             if (data.length > 0){
                 $.each(data, function(index, product){
-                    const escapedName = product.product_name.replace(/'/g, "\\'").replace(/"/g, '\\"');
-                    const card = `<div class="product-card" data-product-id="${product.product_id}">
+                    const escapedName = escapeHtml(product.product_name);
+                    const productId = parseInt(product.product_id) || 0;
+                    const card = `<div class="product-card" data-product-id="${productId}">
                                     <div class="product-image-placeholder"><span>📦</span></div>
                                     <h4 class="product-title">${escapedName}</h4>
                                 </div>`;
@@ -91,18 +101,20 @@ function fetchStoreData(){
 
             if (data.length > 0){
                 $.each(data, function(index, store){
-                    const escapedName = store.store_name ? store.store_name.replace(/'/g, "\\'").replace(/"/g, '\\"') : 'Unnamed Store';
-                    const description = store.store_description 
+                    const escapedName = escapeHtml(store.store_name) || 'Unnamed Store';
+                    const description = escapeHtml(store.store_description 
                         ? (store.store_description.length > 100 
                             ? store.store_description.substring(0, 100) + '...' 
                             : store.store_description)
-                        : 'No description available';
-                    const productCount = store.product_count || 0;
+                        : 'No description available');
+                    const companyName = escapeHtml(store.company_name) || '';
+                    const productCount = parseInt(store.product_count) || 0;
+                    const storeId = parseInt(store.store_id) || 0;
                     
-                    const card = `<div class="store-card" data-store-id="${store.store_id}">
+                    const card = `<div class="store-card" data-store-id="${storeId}">
                                     <div class="store-icon">🏪</div>
                                     <h4 class="store-name">${escapedName}</h4>
-                                    <p class="store-company">${store.company_name || ''}</p>
+                                    <p class="store-company">${companyName}</p>
                                     <p class="store-description">${description}</p>
                                     <p class="store-product-count">${productCount} product(s)</p>
                                 </div>`;

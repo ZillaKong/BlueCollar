@@ -1,7 +1,23 @@
 <?php
 
 define('PROJECT_ROOT', __DIR__ . '/../');
-define('BASE_URL', '/BlueCollar');
+
+// Auto-detect BASE_URL based on environment
+// For local XAMPP: /BlueCollar
+// For hosted: usually / or the subdirectory where the app is deployed
+if (!defined('BASE_URL')) {
+    // Check if we're on localhost
+    $is_localhost = in_array($_SERVER['HTTP_HOST'] ?? '', ['localhost', '127.0.0.1']) 
+                    || strpos($_SERVER['HTTP_HOST'] ?? '', 'localhost:') === 0;
+    
+    if ($is_localhost) {
+        define('BASE_URL', '/BlueCollar');
+    } else {
+        // For hosted environment - detect from script path or use root
+        // Change this if your app is in a subdirectory on the hosted server
+        define('BASE_URL', '');  // Empty string for root, or '/subdirectory' if needed
+    }
+}
 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
