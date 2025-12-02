@@ -22,6 +22,7 @@ admin_only();
         <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
     </head>
     <body>
+        <?php include_once 'includes/admin_bar.php'; ?>
         <div id="top-bar">
             <a href="../index.php"><h1 id="logo-text">BlueCollar</h1></a>
             <div><p>Admin Access</p></div>
