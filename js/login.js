@@ -29,7 +29,7 @@ $(document).ready(function() {
                 if (response.status === 'success') {
                     alert('Login successful!');
                     if (response.role === 'supplier') {
-                        window.location.href = '../view/BlueCoallr.supply/home.php'; // Redirect to dashboard page
+                        window.location.href = '../view/BlueCollar.supply/home.php'; // Redirect to dashboard page
                     }else if (response.role === 'buyer') {
                         window.location.href = '../view/BlueCollar/home.php'; // Redirect to dashboard page
                     }else if (response.role === 'admin') {

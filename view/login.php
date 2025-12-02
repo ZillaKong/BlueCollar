@@ -58,7 +58,7 @@ if (get_logged_in_user_id() !== null) {
             </div>
         </div>
         <div id= "account-management">
-            <p>Don't have an account? <a href="../view/BlueCollar/register.php">Register as a Buyer</a> or <a href="../view/BlueCoallr.supply/register.php">Register as a Supplier</a></p>
+            <p>Don't have an account? <a href="../view/BlueCollar/register.php">Register as a Buyer</a> or <a href="../view/BlueCollar.supply/register.php">Register as a Supplier</a></p>
         </div>
     </div>
     <div id="footer">

@@ -21,8 +21,9 @@ require_login();
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <?php include_once '../includes/admin_bar.php'; ?>
     <div id="top-bar">
-        <a href="../index.php"><h1 id="logo-text">BlueCollar</h1></a>
+        <a href="../../index.php"><h1 id="logo-text">BlueCollar</h1></a>
         <div id="login-links">
         <a href="../BlueCollar/register.php">For Buyers</a>
         <a href="./profile.php"> StoreFront </a>
@@ -37,7 +38,7 @@ require_login();
             </div>
             <div class="action">
                 <h2>Order Management</h2>
-                <button><a href="orders.php">View and Process Orders</a></button>
+                <button><a href="order.php">View and Process Orders</a></button>
             </div>
             <div class="action">
                 <h2>StoreFront Settings</h2>

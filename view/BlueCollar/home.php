@@ -22,10 +22,12 @@ require_login();
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <?php include_once '../includes/admin_bar.php'; ?>
     <div id="top-bar">
         <a href="../BlueCollar/home.php"><h1 id="logo-text">BlueCollar</h1></a>
         <div id="login-links">
-        <a href="../BlueCoallr.supply/register.php">For Suppliers</a>
+        <a href="orders.php">My Orders</a>
+        <a href="../BlueCollar.supply/register.php">For Suppliers</a>
         <a href="./profile.php"> Profile </a>
         <a href="../../actions/logout.php">Logout</a>
         </div>
@@ -39,8 +41,8 @@ require_login();
         </div> -->
         <div id="display-container">
             <h3 id ="display-heading"> Explore Categories </h3>
-            <div class="card-container">
-                
+            <div class="card-container" id="category-container">
+                <!-- Categories will be loaded dynamically by JavaScript -->
             </div>
         </div>
         <div id="spacer"></div>
@@ -48,6 +50,13 @@ require_login();
             <h3 id="display-heading"> Featured Products </h3>
             <div class="card-container" id="product-container">
                 <!-- Products will be loaded dynamically by JavaScript -->
+            </div>
+        </div>
+        <div id="spacer"></div>
+        <div id="display-container">
+            <h3 id="display-heading"> Browse Stores </h3>
+            <div class="card-container" id="store-container">
+                <!-- Stores will be loaded dynamically by JavaScript -->
             </div>
         </div>
         <div id="spacer"></div>

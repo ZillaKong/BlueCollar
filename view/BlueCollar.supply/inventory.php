@@ -23,8 +23,9 @@ require_login();
 </head>
 
 <body>
+    <?php include_once '../includes/admin_bar.php'; ?>
     <div id="top-bar">
-        <a href="../index.php">
+        <a href="../../index.php">
             <h1 id="logo-text">BlueCollar</h1>
         </a>
         <div id="login-links">
@@ -37,9 +38,12 @@ require_login();
         <div id="display-container">
             <h2 id="cat-heading">Inventory</h2>
             <button id="addProductBtn">Add to Inventory</button>
-            <div id="addProductForm" style="display: none;">
+            <div id="addProductFormContainer" style="display: none;">
                 <h3>Add New Product</h3>
-                <form>
+                <form id="addProductForm">
+                    <label for="productCode">Product Code:</label>
+                    <input type="text" id="productCode" placeholder="e.g., SKU-001" required><br><br>
+
                     <label for="productName">Product Name:</label>
                     <input type="text" id="productName" required><br><br>
 
@@ -64,15 +68,16 @@ require_login();
                     <button type="button" id="cancelAddProduct">Cancel</button>
                 </form>
             </div>
+            <!-- End Add Product Form -->
             <table id="inventoryTable">
                 <thead>
                     <tr>
-                        <th>Products ID</th>
+                        <th>Product Code</th>
                         <th>Product Name</th>
                         <th>Category</th>
                         <th>Brand</th>
                         <th>Description</th>
-                        <th>Amount in Stock</th>
+                        <th>Stock</th>
                         <th>Price</th>
                         <th>Actions</th>
                     </tr>

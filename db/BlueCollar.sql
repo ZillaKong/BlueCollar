@@ -44,24 +44,6 @@ CREATE TABLE IF NOT EXISTS `final_users` (
   COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
--- Table structure for table `final_seller_storefront`
--- --------------------------------------------------------
-DROP TABLE IF EXISTS `final_seller_storefront`;
-CREATE TABLE IF NOT EXISTS `final_seller_storefront` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `seller_id` INT(11) NOT NULL,
-  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uniq_seller_id` (`seller_id`),
-  CONSTRAINT `fk_storefront_seller`
-    FOREIGN KEY (`seller_id`)
-    REFERENCES `final_users`(`user_id`)
-    ON DELETE CASCADE
-) ENGINE=InnoDB
-  DEFAULT CHARSET=utf8mb4
-  COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
 -- Table Structure for `final_categories`
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `final_categories`;
@@ -87,6 +69,29 @@ CREATE TABLE IF NOT EXISTS `final_brands` (
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`brand_id`),
   UNIQUE KEY `uniq_brand_name` (`name`)
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+-- Table structure for table `final_seller_storefront`
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `final_seller_storefront`;
+CREATE TABLE IF NOT EXISTS `final_seller_storefront` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `seller_id` INT(11) NOT NULL,
+  `primary_category` INT(11) DEFAULT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_seller_id` (`seller_id`),
+  CONSTRAINT `fk_storefront_seller`
+    FOREIGN KEY (`seller_id`)
+    REFERENCES `final_users`(`user_id`)
+    ON DELETE CASCADE,
+  CONSTRAINT `fk_storefront_category`
+    FOREIGN KEY (`primary_category`)
+    REFERENCES `final_categories`(`cat_id`)
+    ON DELETE SET NULL
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_general_ci;
@@ -148,13 +153,24 @@ DROP TABLE IF EXISTS `final_orders`;
 CREATE TABLE IF NOT EXISTS `final_orders` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `buyer_id` INT(11) NOT NULL,
+  `supplier_id` INT(11) NOT NULL,
+  `storefront_id` INT(11) NOT NULL,
   `invoice_number` VARCHAR(50) NOT NULL,
   `status` ENUM('pending','completed','canceled') NOT NULL DEFAULT 'pending',
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_invoice_number` (`invoice_number`),
   CONSTRAINT `fk_orders_buyer`
     FOREIGN KEY (`buyer_id`)
     REFERENCES `final_users`(`user_id`)
+    ON DELETE CASCADE,
+  CONSTRAINT `fk_orders_supplier`
+    FOREIGN KEY (`supplier_id`)
+    REFERENCES `final_users`(`user_id`)
+    ON DELETE CASCADE,
+  CONSTRAINT `fk_orders_storefront`
+    FOREIGN KEY (`storefront_id`)
+    REFERENCES `final_seller_storefront`(`id`)
     ON DELETE CASCADE
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
@@ -204,6 +220,7 @@ CREATE TABLE IF NOT EXISTS `final_invoices` (
 
 -- --------------------------------------------------------
 -- Table structure for table `final_payments`
+-- (includes Paystack integration fields)
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `final_payments`;
 CREATE TABLE IF NOT EXISTS `final_payments` (
@@ -211,8 +228,11 @@ CREATE TABLE IF NOT EXISTS `final_payments` (
   `invoice_id` INT(11) NOT NULL,
   `payment_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `amount` DECIMAL(10,2) NOT NULL,
-  `payment_method` ENUM('credit_card','paypal','bank_transfer') NOT NULL,
+  `payment_method` ENUM('credit_card','paypal','bank_transfer','paystack') NOT NULL,
+  `payment_reference` VARCHAR(100) DEFAULT NULL,
+  `payment_status` ENUM('pending','completed','failed','refunded') NOT NULL DEFAULT 'pending',
   PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_payment_reference` (`payment_reference`),
   CONSTRAINT `fk_payments_invoice`
     FOREIGN KEY (`invoice_id`)
     REFERENCES `final_invoices`(`id`)
@@ -242,13 +262,31 @@ CREATE TABLE IF NOT EXISTS `final_storefront_categories` (
   COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
--- Trigger: calculate total_amount in invoices table
+-- Triggers: calculate total_amount in invoices table
 -- --------------------------------------------------------
 DROP TRIGGER IF EXISTS `trg_calculate_total_amount`;
+DROP TRIGGER IF EXISTS `trg_update_total_amount`;
+
 DELIMITER //
 
+-- Trigger for INSERT on order items
 CREATE TRIGGER `trg_calculate_total_amount`
 AFTER INSERT ON `final_order_items`
+FOR EACH ROW
+BEGIN
+    DECLARE total DECIMAL(10,2);
+    SELECT IFNULL(SUM(price_at_order * quantity), 0) INTO total
+    FROM `final_order_items`
+    WHERE `order_id` = NEW.`order_id`;
+
+    UPDATE `final_invoices`
+    SET `total_amount` = total
+    WHERE `order_id` = NEW.`order_id`;
+END//
+
+-- Trigger for UPDATE on order items
+CREATE TRIGGER `trg_update_total_amount`
+AFTER UPDATE ON `final_order_items`
 FOR EACH ROW
 BEGIN
     DECLARE total DECIMAL(10,2);

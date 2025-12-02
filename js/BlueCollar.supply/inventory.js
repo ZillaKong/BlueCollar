@@ -3,7 +3,7 @@ $(document).ready(function(){
     loadCategories();
 
     $('#addProductBtn').click(function(){
-        $('#addProductForm').toggle();
+        $('#addProductFormContainer').toggle();
     });
 
     $('#addProductForm').submit(function(e){
@@ -12,7 +12,7 @@ $(document).ready(function(){
     });
 
     $('#cancelAddProduct').click(function(){
-        $('#addProductForm').hide();
+        $('#addProductFormContainer').hide();
         $('#addProductForm')[0].reset();
     });
 });
@@ -28,16 +28,18 @@ function fetchInventoryData(){
 
             if (data.length > 0){
                 $.each(data, function(index, product){
+                    const description = product.description || '';
+                    const productCode = product.product_code || 'N/A';
                     const row = `<tr>
-                            <td>${product.product_id}</td>
-                            <td>${product.product_name}</td>
-                            <td>${product.category_name}</td>
-                            <td>${product.brand_name}</td>
-                            <td>${product.description}</td>
+                            <td>${escapeHtml(productCode)}</td>
+                            <td>${escapeHtml(product.product_name)}</td>
+                            <td>${escapeHtml(product.category_name)}</td>
+                            <td>${escapeHtml(product.brand_name)}</td>
+                            <td>${escapeHtml(description)}</td>
                             <td>${product.stock_quantity}</td>
-                            <td>${product.price}</td>
+                            <td>$${parseFloat(product.price).toFixed(2)}</td>
                             <td>
-                                <button onclick="editProduct(${product.product_id}, '${product.product_name.replace(/'/g, "\\'").replace(/"/g, '\\"')}', '${product.category_name}', '${product.brand_name}', '${product.description.replace(/'/g, "\\'").replace(/"/g, '\\"')}', ${product.price})">Update</button>
+                                <button onclick="editProduct(${product.product_id})">Update</button>
                                 <button onclick="deleteProduct(${product.product_id})">Delete</button>
                             </td>
                         </tr>`;
@@ -52,6 +54,13 @@ function fetchInventoryData(){
             alert('Error loading inventory data.');
         }
     })
+}
+
+function escapeHtml(text){
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
 function loadCategories(){
@@ -99,6 +108,7 @@ function loadBrands(){
 }
 
 function addProduct(){
+    const productCode = $('#productCode').val().trim();
     const productName = $('#productName').val().trim();
     const categoryId = $('#productCategory').val();
     const brandName = $('#productBrand').val().trim();
@@ -106,7 +116,7 @@ function addProduct(){
     const stockQuantity = $('#productStock').val();
     const price = $('#productPrice').val();
 
-    if (!productName || !categoryId || !brandName || !stockQuantity || !price) {
+    if (!productCode || !productName || !categoryId || !brandName || !stockQuantity || !price) {
         alert('Please fill in all required fields.');
         return;
     }
@@ -115,6 +125,7 @@ function addProduct(){
         url: '../../actions/add_product.php',
         type: 'POST',
         data: {
+            product_code: productCode,
             product_name: productName,
             category_id: categoryId,
             brand_name: brandName,
@@ -127,7 +138,7 @@ function addProduct(){
             if (response.status === 'success') {
                 alert('Product added successfully!');
                 $('#addProductForm')[0].reset();
-                $('#addProductForm').hide();
+                $('#addProductFormContainer').hide();
                 fetchInventoryData();
             } else {
                 alert('Error adding product: ' + (response.message || 'Unknown error'));

@@ -10,7 +10,7 @@ if (isset($_SESSION['user_id'])) {
     header('Content-Type: application/json'); 
     echo json_encode(['status' => 'error', 'message' => 'You are already logged in.']);
     // if (get_logged_in_user_role() === 'supplier'){
-    //     header("Location: ../view/BlueCoallr.supply/home.php"); 
+    //     header("Location: ../view/BlueCollar.supply/home.php"); 
     // } else if (get_logged_in_user_role() === 'buyer'){
     //     header("Location: ../view/BlueCollar/home.php"); 
     // }

@@ -18,7 +18,7 @@
         <h1 id="logo-text">BlueCollar</h1>
         <div id="login-links">
         <a href="./view/BlueCollar/register.php">For Buyers</a>
-        <a href="./view/BlueCoallr.supply/register.php">For Suppliers</a>
+        <a href="./view/BlueCollar.supply/register.php">For Suppliers</a>
         <a href="./view/login.php">Login</a>
         </div>
     </div>

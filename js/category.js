@@ -1,10 +1,36 @@
 $(document).ready(function(){
     fetchCategoryData();
 
+    // Open modal when Add Category button is clicked
     $('#addCategoryBtn').click(function(){
-        $('#addCategoryForm').toggle();
+        $('#categoryModal').fadeIn(200);
     });
 
+    // Close modal when X button is clicked
+    $('#closeCategoryModal').click(function(){
+        closeModal();
+    });
+
+    // Close modal when Cancel button is clicked
+    $('#cancelCategoryBtn').click(function(){
+        closeModal();
+    });
+
+    // Close modal when clicking outside the modal content
+    $('#categoryModal').click(function(e){
+        if ($(e.target).is('#categoryModal')) {
+            closeModal();
+        }
+    });
+
+    // Close modal on Escape key
+    $(document).keydown(function(e){
+        if (e.key === 'Escape' && $('#categoryModal').is(':visible')) {
+            closeModal();
+        }
+    });
+
+    // Form submission
     $('#addCategoryForm').submit(function(e){
         e.preventDefault();
         const categoryName = $('#categoryName').val().trim();
@@ -15,6 +41,11 @@ $(document).ready(function(){
         }
     });
 });
+
+function closeModal(){
+    $('#categoryModal').fadeOut(200);
+    $('#categoryName').val('');
+}
 
 function fetchCategoryData(){
     $.ajax({
@@ -91,8 +122,7 @@ function addCategory(categoryName){
         success: function(response){
             if (response.status === 'success') {
                 fetchCategoryData();
-                $('#addCategoryModal').hide();
-                $('#categoryName').val('');
+                closeModal();
             } else {
                 alert('Error adding category: ' + response.message);
             }

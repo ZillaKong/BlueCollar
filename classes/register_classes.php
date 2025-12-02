@@ -85,22 +85,61 @@ class RegisterUser extends db_connection
     {
         $hashed_password = password_hash($password, PASSWORD_BCRYPT);
         $username = 'user_' . time() . rand(1000, 9999); // Always generate unique username
+        
         if ($role === 'supplier') {
             $sql = "INSERT INTO final_users (first_name, last_name, company_name, username, email, password, phone, role, store_name, store_description)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                $stmt = $this->db->prepare($sql);
-                $stmt->bind_param("ssssssssss", $first_name, $last_name, $company_name, $username, $email, $hashed_password, $phone, $role, $store_name, $store_description);
+            $stmt = $this->db->prepare($sql);
+            $stmt->bind_param("ssssssssss", $first_name, $last_name, $company_name, $username, $email, $hashed_password, $phone, $role, $store_name, $store_description);
         }
         else if ($role === 'buyer') {
             $sql = "INSERT INTO final_users (first_name, last_name, company_name, username, email, password, phone, role, buyer_type)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                $stmt = $this->db->prepare($sql);
-                $stmt->bind_param("sssssssss", $first_name, $last_name, $company_name, $username, $email, $hashed_password, $phone, $role, $trade_type);
+            $stmt = $this->db->prepare($sql);
+            $stmt->bind_param("sssssssss", $first_name, $last_name, $company_name, $username, $email, $hashed_password, $phone, $role, $trade_type);
         }
+        
         if ($stmt->execute()) {
-            return ['status' => 'success', 'user_id' => $this->db->insert_id];
+            $new_user_id = $this->db->insert_id;
+            $stmt->close();
+            
+            // If supplier, create storefront automatically
+            if ($role === 'supplier') {
+                $storefront_result = $this->createStorefront($new_user_id);
+                if ($storefront_result['status'] === 'error') {
+                    // Log error but don't fail registration
+                    error_log("Failed to create storefront for user $new_user_id: " . $storefront_result['message']);
+                }
+                return ['status' => 'success', 'user_id' => $new_user_id, 'store_id' => $storefront_result['store_id'] ?? null];
+            }
+            
+            return ['status' => 'success', 'user_id' => $new_user_id];
         } else {
-            return ['status' => 'error', 'message' => $stmt->error];
+            $error = $stmt->error;
+            $stmt->close();
+            return ['status' => 'error', 'message' => $error];
+        }
+    }
+
+    private function createStorefront($seller_id)
+    {
+        $sql = "INSERT INTO final_seller_storefront (seller_id) VALUES (?)";
+        $stmt = $this->db->prepare($sql);
+        
+        if (!$stmt) {
+            return ['status' => 'error', 'message' => 'Failed to prepare storefront query: ' . $this->db->error];
+        }
+        
+        $stmt->bind_param("i", $seller_id);
+        
+        if ($stmt->execute()) {
+            $store_id = $this->db->insert_id;
+            $stmt->close();
+            return ['status' => 'success', 'store_id' => $store_id];
+        } else {
+            $error = $stmt->error;
+            $stmt->close();
+            return ['status' => 'error', 'message' => $error];
         }
     }
 

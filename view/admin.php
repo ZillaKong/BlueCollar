@@ -71,17 +71,12 @@ admin_only();
                     <h3 id="cat-heading">Category</h3>
                     <button id="addCategoryBtn">Add category</button>
                 </div>
-                <form id="addCategoryForm" style="display: none; margin-bottom: 20px;">
-                    <label for="categoryName">Category Name:</label>
-                    <input type="text" id="categoryName" name="categoryName" required>
-                    <button type="submit">Add Category</button>
-                </form>
                 <table id="categoryTable">
                     <thead>
                         <tr>
                         <th>Category ID</th>
                         <th>Category Name</th>
-                        <th>Description</th>
+                        <th>Number of Products</th>
                         <th>Actions</th>
                         </tr>
                     </thead>
@@ -89,19 +84,82 @@ admin_only();
                     </tbody>
                 </table>
             </div>
+
+            <!-- Category Modal Popup -->
+            <div id="categoryModal" class="modal-overlay">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Add New Category</h3>
+                        <button type="button" class="modal-close" id="closeCategoryModal">&times;</button>
+                    </div>
+                    <form id="addCategoryForm">
+                        <div class="form-group">
+                            <label for="categoryName">Category Name:</label>
+                            <input type="text" id="categoryName" name="categoryName" placeholder="Enter category name" required>
+                        </div>
+                        <div class="modal-actions">
+                            <button type="button" class="btn-cancel" id="cancelCategoryBtn">Cancel</button>
+                            <button type="submit" class="btn-submit">Add Category</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <div id="display-container">
                 <h3 id="cat-heading">Storefronts</h3>
-                <table>
-                    <tr>
-                    <th>Storefront ID</th>
-                    <th>Store Name</th>
-                    <th>Seller ID</th>
-                    <th>Description</th>
-                    <th>Actions</th>
-                    </tr>
+                <table id="storefrontTable">
+                    <thead>
+                        <tr>
+                            <th>Store ID</th>
+                            <th>Store Name</th>
+                            <th>Seller ID</th>
+                            <th>Products</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
                 </table>
             </div>
         </div>
+
+        <!-- Admin Quick Navigation -->
+        <div id="admin-nav-container">
+            <h3>Quick Navigation</h3>
+            <div id="admin-nav-sections">
+                <div class="admin-nav-section">
+                    <h4>🛒 Buyer Pages (BlueCollar)</h4>
+                    <ul>
+                        <li><a href="BlueCollar/home.php">Buyer Home</a></li>
+                        <li><a href="BlueCollar/category.php">Browse Categories</a></li>
+                        <li><a href="BlueCollar/storefront.php">View Storefront</a></li>
+                        <li><a href="BlueCollar/orders.php">Buyer Orders</a></li>
+                        <li><a href="BlueCollar/profile.php">Buyer Profile</a></li>
+                        <li><a href="BlueCollar/register.php">Buyer Registration</a></li>
+                    </ul>
+                </div>
+                <div class="admin-nav-section">
+                    <h4>🏪 Supplier Pages (BlueCollar.Supply)</h4>
+                    <ul>
+                        <li><a href="BlueCollar.supply/home.php">Supplier Home</a></li>
+                        <li><a href="BlueCollar.supply/inventory.php">Manage Inventory</a></li>
+                        <li><a href="BlueCollar.supply/order.php">Supplier Orders</a></li>
+                        <li><a href="BlueCollar.supply/profile.php">Supplier Profile</a></li>
+                        <li><a href="BlueCollar.supply/register.php">Supplier Registration</a></li>
+                    </ul>
+                </div>
+                <div class="admin-nav-section">
+                    <h4>⚙️ System Pages</h4>
+                    <ul>
+                        <li><a href="../index.php">Landing Page</a></li>
+                        <li><a href="login.php">Login Page</a></li>
+                        <li><a href="admin.php">Admin Dashboard (Current)</a></li>
+                        <li><a href="../actions/logout.php">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
         <div id="footer">
             <p> &copy; 2025 BlueCollar. All rights reserved. </p>
         </div>
@@ -110,5 +168,6 @@ admin_only();
         <script src="../js/category.js"></script>
         <script src="../js/product.js"></script>
         <script src="../js/brands.js"></script>
+        <script src="../js/storefronts.js"></script>
     </body>
 </html>

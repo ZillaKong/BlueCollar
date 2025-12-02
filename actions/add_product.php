@@ -6,18 +6,21 @@ require_once '../controllers/add_product_controller.php';
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $product_code = trim($_POST['product_code'] ?? '');
     $product_name = trim($_POST['product_name'] ?? '');
     $category_id = trim($_POST['category_id'] ?? '');
-    $brand_id = trim($_POST['brand_id'] ?? '');
+    $brand_name = trim($_POST['brand_name'] ?? '');
     $description = trim($_POST['description'] ?? '');
+    $stock_quantity = intval($_POST['stock_quantity'] ?? 0);
+    $price = floatval($_POST['price'] ?? 0.00);
 
-    if (empty($product_name) || empty($category_id) || empty($brand_id)) {
-        echo json_encode(['status' => 'error', 'message' => 'All fields are required.']);
+    if (empty($product_code) || empty($product_name) || empty($category_id) || empty($brand_name)) {
+        echo json_encode(['status' => 'error', 'message' => 'Product code, name, category, and brand are required.']);
         exit;
     }
 
     try {
-        $add_result = add_product_controller($product_name, $category_id, $brand_id, $description);
+        $add_result = add_product_controller($product_code, $product_name, $category_id, $brand_name, $description, $stock_quantity, $price);
 
         if ($add_result['status'] === 'success') {
             echo json_encode(['status' => 'success', 'message' => 'Product added successfully.']);
