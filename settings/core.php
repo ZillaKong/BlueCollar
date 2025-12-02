@@ -5,16 +5,6 @@ define('PROJECT_ROOT', __DIR__ . '/../');
 // ============================================================
 // BASE_URL CONFIGURATION
 // ============================================================
-// Option 1: Set your hosted URL base path here (recommended)
-// Examples:
-//   - If site is at example.com/        -> ''  (empty string)
-//   - If site is at example.com/myapp/  -> '/myapp'
-//   - If site is at subdomain.example.com/ -> ''
-// 
-// Uncomment and set this if auto-detection doesn't work:
-// define('BASE_URL', '');  // <-- SET YOUR HOSTED BASE PATH HERE
-// ============================================================
-
 if (!defined('BASE_URL')) {
     // Check if we're on localhost
     $is_localhost = in_array($_SERVER['HTTP_HOST'] ?? '', ['localhost', '127.0.0.1']) 
@@ -23,16 +13,8 @@ if (!defined('BASE_URL')) {
     if ($is_localhost) {
         define('BASE_URL', '/BlueCollar');
     } else {
-        // Auto-detect from script path
-        $script_name = $_SERVER['SCRIPT_NAME'] ?? '';
-        $base_path = '';
-        
-        // Try to detect if we're in a subdirectory
-        if (preg_match('#^(/[^/]+)(?:/view|/actions|/settings)#', $script_name, $matches)) {
-            $base_path = $matches[1];
-        }
-        
-        define('BASE_URL', $base_path);
+        // Hosted environment: http://169.239.251.102:442/~nene.quayenortey/BlueCollar/
+        define('BASE_URL', '/~nene.quayenortey/BlueCollar');
     }
 }
 
