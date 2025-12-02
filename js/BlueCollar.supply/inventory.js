@@ -39,7 +39,7 @@ function fetchInventoryData(){
                             <td>${product.stock_quantity}</td>
                             <td>$${parseFloat(product.price).toFixed(2)}</td>
                             <td>
-                                <button onclick="editProduct(${product.product_id})">Update</button>
+                                <button onclick="editProduct(${product.product_id}, '${escapeHtml(product.product_name).replace(/'/g, "\\'")}')">Update</button>
                                 <button onclick="deleteProduct(${product.product_id})">Delete</button>
                             </td>
                         </tr>`;
@@ -151,9 +151,9 @@ function addProduct(){
     });
 }
 
-function editProduct(id, name, category, brand, description){
+function editProduct(id, name){
     // Simple form generation using prompts for now
-    const newName = prompt("Enter new product name:", name);
+    const newName = prompt("Enter new product name:", name || '');
     if (newName && newName.trim() !== '' && newName !== name) {
         $.ajax({
             url: '../../actions/update_product.php',
