@@ -5,7 +5,7 @@ settings/db_cred.php
 settings/paystack_config.php
 
 # readme
-Readme.md
+README.md
 
 # Environment files
 .env
