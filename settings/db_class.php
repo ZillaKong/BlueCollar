@@ -1,6 +1,6 @@
 <?php
 
-include_once 'db_cred.php';
+include_once __DIR__ . '/db_cred.php';
 
    if (!class_exists('db_connection')) {
     class db_connection

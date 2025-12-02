@@ -1,7 +1,9 @@
 <?php
+// Suppress warnings to ensure clean JSON output
+error_reporting(E_ERROR | E_PARSE);
 
-require_once '../settings/core.php';
-require_once '../controllers/register_user_controller.php';
+require_once __DIR__ . '/../settings/core.php';
+require_once __DIR__ . '/../controllers/register_user_controller.php';
 
 header('Content-type: application/json');
 
