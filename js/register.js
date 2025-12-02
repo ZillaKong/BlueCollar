@@ -21,7 +21,7 @@ $(document).ready(function() {
         }   
         // If validation passes, submit the form
         $.ajax({
-            url: '../actions/register_user_actions.php',
+            url: '../../actions/register_user_actions.php',
             type: 'POST',
             data: formData,
             success: function(response) {
