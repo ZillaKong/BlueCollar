@@ -2,9 +2,19 @@
 
 define('PROJECT_ROOT', __DIR__ . '/../');
 
-// Auto-detect BASE_URL based on environment
-// For local XAMPP: /BlueCollar
-// For hosted: usually / or the subdirectory where the app is deployed
+// ============================================================
+// BASE_URL CONFIGURATION
+// ============================================================
+// Option 1: Set your hosted URL base path here (recommended)
+// Examples:
+//   - If site is at example.com/        -> ''  (empty string)
+//   - If site is at example.com/myapp/  -> '/myapp'
+//   - If site is at subdomain.example.com/ -> ''
+// 
+// Uncomment and set this if auto-detection doesn't work:
+// define('BASE_URL', '');  // <-- SET YOUR HOSTED BASE PATH HERE
+// ============================================================
+
 if (!defined('BASE_URL')) {
     // Check if we're on localhost
     $is_localhost = in_array($_SERVER['HTTP_HOST'] ?? '', ['localhost', '127.0.0.1']) 
@@ -13,9 +23,16 @@ if (!defined('BASE_URL')) {
     if ($is_localhost) {
         define('BASE_URL', '/BlueCollar');
     } else {
-        // For hosted environment - detect from script path or use root
-        // Change this if your app is in a subdirectory on the hosted server
-        define('BASE_URL', '');  // Empty string for root, or '/subdirectory' if needed
+        // Auto-detect from script path
+        $script_name = $_SERVER['SCRIPT_NAME'] ?? '';
+        $base_path = '';
+        
+        // Try to detect if we're in a subdirectory
+        if (preg_match('#^(/[^/]+)(?:/view|/actions|/settings)#', $script_name, $matches)) {
+            $base_path = $matches[1];
+        }
+        
+        define('BASE_URL', $base_path);
     }
 }
 
