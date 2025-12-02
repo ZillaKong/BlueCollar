@@ -1,16 +1,18 @@
 <!-- Admin Access Bar - Hidden by default, shown via JavaScript when admin is logged in -->
+<?php $base = defined('BASE_URL') ? BASE_URL : ''; ?>
 <div id="admin-access-bar" style="display: none;">
     <span class="admin-badge">👑 Admin Access</span>
     <nav class="admin-quick-links">
-        <a href="/BlueCollar/view/admin.php">Admin Dashboard</a>
-        <a href="/BlueCollar/view/BlueCollar/home.php">Buyer View</a>
-        <a href="/BlueCollar/view/BlueCollar.supply/home.php">Supplier View</a>
+        <a href="<?php echo $base; ?>/view/admin.php">Admin Dashboard</a>
+        <a href="<?php echo $base; ?>/view/BlueCollar/home.php">Buyer View</a>
+        <a href="<?php echo $base; ?>/view/BlueCollar.supply/home.php">Supplier View</a>
     </nav>
 </div>
 <script>
 // Check if user is admin and show admin bar
 (function() {
-    fetch('/BlueCollar/actions/get_user_role.php')
+    const baseUrl = '<?php echo $base; ?>';
+    fetch(baseUrl + '/actions/get_user_role.php')
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success' && data.role === 'admin') {
