@@ -457,7 +457,30 @@
     font-family: 'Quicksand', sans-serif;
     transition: all 0.3s ease;
     background: #FAF9F6;
-    color: #454B1B;
+    color: #454B1B !important;
+}
+
+/* Ensure select dropdown and options are visible */
+.form-group select {
+    appearance: auto;
+    -webkit-appearance: menulist;
+    -moz-appearance: menulist;
+    background-color: #FAF9F6;
+    color: #454B1B !important;
+    cursor: pointer;
+}
+
+.form-group select option {
+    background-color: #ffffff;
+    color: #454B1B !important;
+    padding: 10px;
+    font-family: 'Quicksand', sans-serif;
+}
+
+.form-group select option:hover,
+.form-group select option:checked {
+    background-color: #454B1B;
+    color: #FAF9F6 !important;
 }
 
 .form-group input:focus,

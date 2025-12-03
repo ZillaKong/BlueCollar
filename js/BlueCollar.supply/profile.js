@@ -264,7 +264,10 @@ function loadCategories() {
             
             if (Array.isArray(data)) {
                 data.forEach(function(category) {
-                    select.append(`<option value="${category.cat_id}">${escapeHtml(category.name)}</option>`);
+                    // API returns category_id and category_name (not cat_id and name)
+                    const catId = category.category_id || category.cat_id;
+                    const catName = category.category_name || category.name;
+                    select.append(`<option value="${catId}">${escapeHtml(catName)}</option>`);
                 });
                 
                 // Set value if store data is already loaded
