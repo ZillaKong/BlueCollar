@@ -1,7 +1,7 @@
 <?php
 
-require_once '../settings/core.php';
-require_once '../classes/category_classes.php';
+require_once __DIR__ . '/../settings/core.php';
+require_once __DIR__ . '/../classes/category_classes.php';
 
 function get_category_controller(){
     $veiw_cat = new Category();

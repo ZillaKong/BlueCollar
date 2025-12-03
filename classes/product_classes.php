@@ -1,5 +1,5 @@
 <?php
-require_once '../settings/db_class.php';
+require_once __DIR__ . '/../settings/db_class.php';
 
 class Products extends db_connection {
 
@@ -68,14 +68,35 @@ class Products extends db_connection {
         if (!$this->db_connect()) {
             return [];
         }
+        
+        // First, get the seller_id for this storefront
+        $seller_sql = "SELECT seller_id FROM final_seller_storefront WHERE id = ?";
+        $seller_stmt = $this->db->prepare($seller_sql);
+        $seller_id = null;
+        if ($seller_stmt) {
+            $seller_stmt->bind_param("i", $store_id);
+            $seller_stmt->execute();
+            $seller_result = $seller_stmt->get_result();
+            if ($seller_result && $seller_result->num_rows > 0) {
+                $row = $seller_result->fetch_assoc();
+                $seller_id = $row['seller_id'];
+            }
+            $seller_stmt->close();
+        }
+        
+        // Query products by storefront_id OR seller_id (for backward compatibility)
         $sql = "SELECT p.id AS product_id, p.product_code, p.product_name, c.name AS category_name, b.name AS brand_name, p.product_description AS description, p.stock_quantity, p.price
         FROM final_products p
         LEFT JOIN final_categories c ON p.category_id = c.cat_id
         LEFT JOIN final_brands b ON p.brand_id = b.brand_id
-        WHERE p.storefront_id = ?
+        WHERE p.storefront_id = ? OR p.seller_id = ?
         ORDER BY p.product_name";
         $stmt = $this->db->prepare($sql);
-        $stmt->bind_param("i", $store_id);
+        if (!$stmt) {
+            error_log("Prepare failed in get_products_by_store: " . $this->db->error);
+            return [];
+        }
+        $stmt->bind_param("ii", $store_id, $seller_id);
         $stmt->execute();
         $result = $stmt->get_result();
 

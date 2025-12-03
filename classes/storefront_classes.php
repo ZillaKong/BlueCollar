@@ -1,5 +1,5 @@
 <?php
-require_once '../settings/db_class.php';
+require_once __DIR__ . '/../settings/db_class.php';
 
 class Storefront extends db_connection {
 
@@ -59,16 +59,36 @@ class Storefront extends db_connection {
             return [];
         }
         
+        // First, get the seller_id for this storefront
+        $seller_sql = "SELECT seller_id FROM final_seller_storefront WHERE id = ?";
+        $seller_stmt = $this->db->prepare($seller_sql);
+        $seller_id = null;
+        if ($seller_stmt) {
+            $seller_stmt->bind_param("i", $store_id);
+            $seller_stmt->execute();
+            $seller_result = $seller_stmt->get_result();
+            if ($seller_result && $seller_result->num_rows > 0) {
+                $row = $seller_result->fetch_assoc();
+                $seller_id = $row['seller_id'];
+            }
+            $seller_stmt->close();
+        }
+        
+        // Query products by storefront_id OR seller_id (for backward compatibility)
         $sql = "SELECT p.id AS product_id, p.product_name, p.product_description AS description,
-                p.price, p.stock_quantity, p.availability_status,
+                p.price, p.stock_quantity, p.availability_status, p.category_id,
                 c.name AS category_name, b.name AS brand_name
                 FROM final_products p
                 LEFT JOIN final_categories c ON p.category_id = c.cat_id
                 LEFT JOIN final_brands b ON p.brand_id = b.brand_id
-                WHERE p.storefront_id = ?
+                WHERE p.storefront_id = ? OR p.seller_id = ?
                 ORDER BY p.product_name";
         $stmt = $this->db->prepare($sql);
-        $stmt->bind_param("i", $store_id);
+        if (!$stmt) {
+            error_log("Prepare failed in get_storefront_products: " . $this->db->error);
+            return [];
+        }
+        $stmt->bind_param("ii", $store_id, $seller_id);
         $stmt->execute();
         $result = $stmt->get_result();
 
@@ -211,22 +231,50 @@ class Storefront extends db_connection {
         }
         
         $sql = "SELECT s.id AS store_id, s.primary_category, u.store_name, u.store_description, 
-                u.company_name, u.phone
+                u.company_name, u.phone, c.name AS category_name
                 FROM final_seller_storefront s
                 INNER JOIN final_users u ON s.seller_id = u.user_id
+                LEFT JOIN final_categories c ON s.primary_category = c.cat_id
                 WHERE s.seller_id = ?";
         $stmt = $this->db->prepare($sql);
+        if (!$stmt) {
+            error_log("Prepare failed: " . $this->db->error);
+            return null;
+        }
         $stmt->bind_param("i", $seller_id);
         $stmt->execute();
         $result = $stmt->get_result();
 
-        if ($result->num_rows === 1) {
+        if ($result && $result->num_rows === 1) {
             $data = $result->fetch_assoc();
             $stmt->close();
             return $data;
         }
         
         $stmt->close();
+        
+        // If no storefront exists, create one and return basic data
+        $this->get_storefront_by_seller($seller_id);
+        
+        // Try fetching again after creation
+        $sql2 = "SELECT s.id AS store_id, s.primary_category, u.store_name, u.store_description, 
+                u.company_name, u.phone
+                FROM final_seller_storefront s
+                INNER JOIN final_users u ON s.seller_id = u.user_id
+                WHERE s.seller_id = ?";
+        $stmt2 = $this->db->prepare($sql2);
+        if ($stmt2) {
+            $stmt2->bind_param("i", $seller_id);
+            $stmt2->execute();
+            $result2 = $stmt2->get_result();
+            if ($result2 && $result2->num_rows === 1) {
+                $data = $result2->fetch_assoc();
+                $stmt2->close();
+                return $data;
+            }
+            $stmt2->close();
+        }
+        
         return null;
     }
 

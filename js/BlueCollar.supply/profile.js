@@ -66,9 +66,12 @@ function displayStorePreview(data) {
     // Store name
     $('#preview-store-name').text(data.store_name || 'Your Store');
     
-    // Category
+    // Category - check both category_name (from JOIN) and primary_category (ID)
     if (data.category_name) {
         $('#preview-category').text(data.category_name);
+    } else if (data.primary_category) {
+        // Category ID is set but name wasn't joined - fetch it
+        $('#preview-category').text('Category #' + data.primary_category);
     } else {
         $('#preview-category').html('<em>Not set</em>');
     }
