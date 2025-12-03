@@ -152,7 +152,7 @@ function displayProducts(products){
             // Escape all user-generated content to prevent XSS
             const escapedName = escapeHtml(product.product_name);
             const description = escapeHtml(product.description) || 'No description available';
-            const price = product.price ? '$' + parseFloat(product.price).toFixed(2) : 'Price not set';
+            const price = product.price ? 'GH₵' + parseFloat(product.price).toFixed(2) : 'Price not set';
             const priceValue = parseFloat(product.price) || 0;
             const brand = escapeHtml(product.brand_name) || 'Unknown brand';
             const category = escapeHtml(product.category_name) || 'Uncategorized';
@@ -422,7 +422,7 @@ function openPaymentModal(){
     // Populate payment modal with order info
     $('#payment-invoice-number').text('#' + window.orderContext.invoiceNumber);
     $('#payment-item-count').text(window.orderContext.items.length + ' item(s)');
-    $('#payment-total').text('$' + parseFloat(window.orderContext.total).toFixed(2));
+    $('#payment-total').text('GH₵' + parseFloat(window.orderContext.total).toFixed(2));
     
     // Show modal
     $('#payment-modal').show();
@@ -547,7 +547,7 @@ function showPaymentSuccess(data){
                 <h2>Payment Successful!</h2>
                 <p>Your order has been completed.</p>
                 <div class="success-details">
-                    <p><strong>Amount Paid:</strong> $${parseFloat(data.amount).toFixed(2)}</p>
+                    <p><strong>Amount Paid:</strong> GH₵${parseFloat(data.amount).toFixed(2)}</p>
                     <p><strong>Reference:</strong> ${escapeHtml(data.reference)}</p>
                 </div>
                 <button onclick="window.location.href='orders.php'" class="btn-primary">View My Orders</button>

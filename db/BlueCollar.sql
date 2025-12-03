@@ -97,6 +97,29 @@ CREATE TABLE IF NOT EXISTS `final_seller_storefront` (
   COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
+-- Table structure for table `final_storefront_categories`
+-- (optional: links storefronts to multiple categories)
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `final_storefront_categories`;
+CREATE TABLE IF NOT EXISTS `final_storefront_categories` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `storefront_id` INT(11) NOT NULL,
+  `category_id` INT(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_storefront_category` (`storefront_id`, `category_id`),
+  CONSTRAINT `fk_sc_storefront`
+    FOREIGN KEY (`storefront_id`)
+    REFERENCES `final_seller_storefront`(`id`)
+    ON DELETE CASCADE,
+  CONSTRAINT `fk_sc_category`
+    FOREIGN KEY (`category_id`)
+    REFERENCES `final_categories`(`cat_id`)
+    ON DELETE CASCADE
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
 -- Table structure for table `final_products`
 -- (moved after categories & brands so FKs work)
 -- --------------------------------------------------------

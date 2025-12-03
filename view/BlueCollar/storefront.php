@@ -87,7 +87,7 @@ require_login();
         <div class="order-bar-info">
             <span class="order-bar-invoice">Order: <span id="bar-invoice-number">-</span></span>
             <span class="order-bar-items"><span id="bar-item-count">0</span> item(s)</span>
-            <span class="order-bar-total">Total: $<span id="bar-total">0.00</span></span>
+            <span class="order-bar-total">Total: GH₵<span id="bar-total">0.00</span></span>
         </div>
         <div class="order-bar-actions">
             <a href="orders.php" class="btn-secondary">View Order</a>
@@ -114,7 +114,7 @@ require_login();
                     </div>
                     <div class="payment-row total-row">
                         <span>Total Amount:</span>
-                        <span id="payment-total">$0.00</span>
+                        <span id="payment-total">GH₵0.00</span>
                     </div>
                 </div>
                 

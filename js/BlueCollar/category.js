@@ -32,7 +32,7 @@ function fetchProductsByCategory(catId){
                 $.each(data, function(index, product){
                     const escapedName = product.product_name.replace(/'/g, "\\'").replace(/"/g, '\\"');
                     const description = product.description ? product.description : 'No description available';
-                    const price = product.price ? '$' + parseFloat(product.price).toFixed(2) : 'Price not set';
+                    const price = product.price ? 'GH₵' + parseFloat(product.price).toFixed(2) : 'Price not set';
                     const stock = product.stock_quantity ? product.stock_quantity + ' in stock' : 'Out of stock';
                     const brand = product.brand_name ? product.brand_name : 'Unknown brand';
                     const store = product.store_name ? product.store_name : 'Unknown store';

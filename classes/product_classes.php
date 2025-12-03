@@ -72,14 +72,14 @@ class Products extends db_connection {
         // First, get the seller_id for this storefront
         $seller_sql = "SELECT seller_id FROM final_seller_storefront WHERE id = ?";
         $seller_stmt = $this->db->prepare($seller_sql);
-        $seller_id = null;
+        $seller_id = 0; // Use 0 instead of null for safe SQL comparison
         if ($seller_stmt) {
             $seller_stmt->bind_param("i", $store_id);
             $seller_stmt->execute();
             $seller_result = $seller_stmt->get_result();
             if ($seller_result && $seller_result->num_rows > 0) {
                 $row = $seller_result->fetch_assoc();
-                $seller_id = $row['seller_id'];
+                $seller_id = intval($row['seller_id']);
             }
             $seller_stmt->close();
         }
@@ -89,14 +89,14 @@ class Products extends db_connection {
         FROM final_products p
         LEFT JOIN final_categories c ON p.category_id = c.cat_id
         LEFT JOIN final_brands b ON p.brand_id = b.brand_id
-        WHERE p.storefront_id = ? OR p.seller_id = ?
+        WHERE p.storefront_id = ? OR (? > 0 AND p.seller_id = ?)
         ORDER BY p.product_name";
         $stmt = $this->db->prepare($sql);
         if (!$stmt) {
             error_log("Prepare failed in get_products_by_store: " . $this->db->error);
             return [];
         }
-        $stmt->bind_param("ii", $store_id, $seller_id);
+        $stmt->bind_param("iii", $store_id, $seller_id, $seller_id);
         $stmt->execute();
         $result = $stmt->get_result();
 

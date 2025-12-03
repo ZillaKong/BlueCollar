@@ -47,16 +47,26 @@ function loadStorefrontPreview() {
         type: 'GET',
         dataType: 'json',
         success: function(response) {
+            console.log('Storefront response:', response);
             if (response.status === 'success' && response.data) {
                 storeData = response.data;
+                console.log('Store ID:', response.data.store_id);
                 displayStorePreview(response.data);
-                loadStoreProducts(response.data.store_id);
+                if (response.data.store_id) {
+                    loadStoreProducts(response.data.store_id);
+                } else {
+                    console.error('No store_id in response');
+                    displayProductsPreview([]);
+                    updateStats(0, 0, 0, 0);
+                }
             } else {
+                console.log('No data or error status:', response);
                 displayEmptyStore();
             }
         },
         error: function(xhr, status, error) {
             console.error('Error loading storefront:', error);
+            console.error('Response text:', xhr.responseText);
             displayEmptyStore();
         }
     });
@@ -123,20 +133,28 @@ function displayEmptyStore() {
 }
 
 function loadStoreProducts(storeId) {
+    console.log('Loading products for store ID:', storeId);
     $.ajax({
         url: '../../actions/get_storefront.php',
         type: 'GET',
         data: { store_id: storeId },
         dataType: 'json',
         success: function(response) {
+            console.log('Products response:', response);
             if (response.status === 'success') {
                 productsData = response.products || [];
+                console.log('Products count:', productsData.length);
                 displayProductsPreview(productsData);
                 calculateStats(productsData, response.categories || []);
+            } else {
+                console.error('Products load failed:', response.message);
+                displayProductsPreview([]);
+                updateStats(0, 0, 0, 0);
             }
         },
         error: function(xhr, status, error) {
             console.error('Error loading products:', error);
+            console.error('Response text:', xhr.responseText);
             displayProductsPreview([]);
             updateStats(0, 0, 0, 0);
         }
@@ -164,7 +182,7 @@ function displayProductsPreview(products) {
     
     previewProducts.forEach(function(product) {
         const stockStatus = getStockStatus(product.stock_quantity, product.availability_status);
-        const price = product.price ? '$' + parseFloat(product.price).toFixed(2) : 'No price';
+        const price = product.price ? 'GH₵' + parseFloat(product.price).toFixed(2) : 'No price';
         
         const card = `
             <div class="product-preview-card">

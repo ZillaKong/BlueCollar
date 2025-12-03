@@ -109,7 +109,7 @@ function displayOrders(orders){
         const statusClass = getStatusClass(order.status);
         const statusLabel = getStatusLabel(order.status);
         const storeName = order.store_name || order.company_name || 'Unknown Store';
-        const totalAmount = order.total_amount ? '$' + parseFloat(order.total_amount).toFixed(2) : 'N/A';
+        const totalAmount = order.total_amount ? 'GH₵' + parseFloat(order.total_amount).toFixed(2) : 'N/A';
         const createdDate = formatDate(order.created_at);
         
         const card = `
@@ -187,8 +187,8 @@ function displayOrderDetails(data){
     if (items.length > 0) {
         itemsHtml = '<div class="order-items-list">';
         $.each(items, function(index, item){
-            const lineTotal = '$' + parseFloat(item.line_total).toFixed(2);
-            const unitPrice = '$' + parseFloat(item.price_at_order).toFixed(2);
+            const lineTotal = 'GH₵' + parseFloat(item.line_total).toFixed(2);
+            const unitPrice = 'GH₵' + parseFloat(item.price_at_order).toFixed(2);
             
             itemsHtml += `
                 <div class="order-item" data-item-id="${item.item_id}">
@@ -213,7 +213,7 @@ function displayOrderDetails(data){
         itemsHtml = '<p class="no-items">No items in this order yet.</p>';
     }
 
-    const totalAmount = '$' + parseFloat(data.calculated_total).toFixed(2);
+    const totalAmount = 'GH₵' + parseFloat(data.calculated_total).toFixed(2);
     const statusLabel = getStatusLabel(order.status);
     const statusClass = getStatusClass(order.status);
 
@@ -342,7 +342,7 @@ function openPaymentModalForOrder(orderId){
     // Populate payment modal
     $('#payment-invoice-number').text('#' + invoice);
     $('#payment-item-count').text(itemCount + ' item(s)');
-    $('#payment-total').text('$' + total.toFixed(2));
+    $('#payment-total').text('GH₵' + total.toFixed(2));
     
     // Close order modal and show payment modal
     closeModal();
@@ -475,7 +475,7 @@ function showPaymentSuccess(data){
                 <span class="alert-icon">✓</span>
                 <div class="alert-text">
                     <strong>Payment Successful!</strong>
-                    <p>Your order has been completed. Amount: $${parseFloat(data.amount).toFixed(2)}</p>
+                    <p>Your order has been completed. Amount: GH₵${parseFloat(data.amount).toFixed(2)}</p>
                 </div>
                 <button class="alert-close" onclick="this.parentElement.parentElement.remove()">&times;</button>
             </div>

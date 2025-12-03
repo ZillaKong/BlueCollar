@@ -37,7 +37,7 @@ function fetchInventoryData(){
                             <td>${escapeHtml(product.brand_name)}</td>
                             <td>${escapeHtml(description)}</td>
                             <td>${product.stock_quantity}</td>
-                            <td>$${parseFloat(product.price).toFixed(2)}</td>
+                            <td>GH₵${parseFloat(product.price).toFixed(2)}</td>
                             <td>
                                 <button onclick="editProduct(${product.product_id}, '${escapeHtml(product.product_name).replace(/'/g, "\\'")}')">Update</button>
                                 <button onclick="deleteProduct(${product.product_id})">Delete</button>

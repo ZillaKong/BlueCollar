@@ -106,7 +106,7 @@ require_login();
                     </div>
                     <div class="payment-row total-row">
                         <span>Total Amount:</span>
-                        <span id="payment-total">$0.00</span>
+                        <span id="payment-total">GH₵0.00</span>
                     </div>
                 </div>
                 
@@ -145,7 +145,7 @@ require_login();
             <span class="alert-icon">✓</span>
             <div class="alert-text">
                 <strong>Payment Successful!</strong>
-                <p>Your order has been completed. Amount: $<?php echo number_format(floatval($_GET['amount'] ?? 0), 2); ?></p>
+                <p>Your order has been completed. Amount: GH₵<?php echo number_format(floatval($_GET['amount'] ?? 0), 2); ?></p>
             </div>
             <button class="alert-close" onclick="this.parentElement.parentElement.remove()">&times;</button>
         </div>

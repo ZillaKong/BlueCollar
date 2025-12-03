@@ -33,13 +33,59 @@ class Storefront extends db_connection {
             return [];
         }
         
-        $sql = "SELECT c.cat_id AS category_id, c.name AS category_name
-                FROM final_storefront_categories sc
-                INNER JOIN final_categories c ON sc.category_id = c.cat_id
-                WHERE sc.storefront_id = ?
+        // Try to get categories from the storefront_categories table
+        // If the table doesn't exist, fall back to getting categories from products
+        try {
+            $sql = "SELECT c.cat_id AS category_id, c.name AS category_name
+                    FROM final_storefront_categories sc
+                    INNER JOIN final_categories c ON sc.category_id = c.cat_id
+                    WHERE sc.storefront_id = ?
+                    ORDER BY c.name";
+            $stmt = $this->db->prepare($sql);
+            if ($stmt) {
+                $stmt->bind_param("i", $store_id);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                $data = [];
+                if ($result) {
+                    while ($row = $result->fetch_assoc()) {
+                        $data[] = $row;
+                    }
+                    $result->free();
+                }
+                $stmt->close();
+                return $data;
+            }
+        } catch (Exception $e) {
+            // Table might not exist, fall through to alternative query
+        }
+        
+        // Fallback: Get unique categories from products in this store
+        $seller_id = 0;
+        $seller_sql = "SELECT seller_id FROM final_seller_storefront WHERE id = ?";
+        $seller_stmt = $this->db->prepare($seller_sql);
+        if ($seller_stmt) {
+            $seller_stmt->bind_param("i", $store_id);
+            $seller_stmt->execute();
+            $seller_result = $seller_stmt->get_result();
+            if ($seller_result && $seller_result->num_rows > 0) {
+                $row = $seller_result->fetch_assoc();
+                $seller_id = intval($row['seller_id']);
+            }
+            $seller_stmt->close();
+        }
+        
+        $sql = "SELECT DISTINCT c.cat_id AS category_id, c.name AS category_name
+                FROM final_products p
+                INNER JOIN final_categories c ON p.category_id = c.cat_id
+                WHERE p.storefront_id = ? OR (? > 0 AND p.seller_id = ?)
                 ORDER BY c.name";
         $stmt = $this->db->prepare($sql);
-        $stmt->bind_param("i", $store_id);
+        if (!$stmt) {
+            return [];
+        }
+        $stmt->bind_param("iii", $store_id, $seller_id, $seller_id);
         $stmt->execute();
         $result = $stmt->get_result();
 
@@ -62,33 +108,36 @@ class Storefront extends db_connection {
         // First, get the seller_id for this storefront
         $seller_sql = "SELECT seller_id FROM final_seller_storefront WHERE id = ?";
         $seller_stmt = $this->db->prepare($seller_sql);
-        $seller_id = null;
+        $seller_id = 0; // Use 0 instead of null for safe SQL comparison
         if ($seller_stmt) {
             $seller_stmt->bind_param("i", $store_id);
             $seller_stmt->execute();
             $seller_result = $seller_stmt->get_result();
             if ($seller_result && $seller_result->num_rows > 0) {
                 $row = $seller_result->fetch_assoc();
-                $seller_id = $row['seller_id'];
+                $seller_id = intval($row['seller_id']);
             }
             $seller_stmt->close();
         }
         
         // Query products by storefront_id OR seller_id (for backward compatibility)
+        // Note: availability_status might not exist in all databases, using COALESCE for safety
         $sql = "SELECT p.id AS product_id, p.product_name, p.product_description AS description,
-                p.price, p.stock_quantity, p.availability_status, p.category_id,
+                p.price, p.stock_quantity, 
+                COALESCE(p.availability_status, 'in stock') AS availability_status, 
+                p.category_id,
                 c.name AS category_name, b.name AS brand_name
                 FROM final_products p
                 LEFT JOIN final_categories c ON p.category_id = c.cat_id
                 LEFT JOIN final_brands b ON p.brand_id = b.brand_id
-                WHERE p.storefront_id = ? OR p.seller_id = ?
+                WHERE p.storefront_id = ? OR (? > 0 AND p.seller_id = ?)
                 ORDER BY p.product_name";
         $stmt = $this->db->prepare($sql);
         if (!$stmt) {
             error_log("Prepare failed in get_storefront_products: " . $this->db->error);
             return [];
         }
-        $stmt->bind_param("ii", $store_id, $seller_id);
+        $stmt->bind_param("iii", $store_id, $seller_id, $seller_id);
         $stmt->execute();
         $result = $stmt->get_result();
 

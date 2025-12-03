@@ -62,7 +62,7 @@ function displayOrders(orders){
         const statusLabel = getStatusLabel(order.status);
         const buyerName = order.buyer_name || 'Unknown Buyer';
         const companyName = order.buyer_company || '';
-        const totalAmount = order.total_amount ? '$' + parseFloat(order.total_amount).toFixed(2) : 'N/A';
+        const totalAmount = order.total_amount ? 'GH₵' + parseFloat(order.total_amount).toFixed(2) : 'N/A';
         const createdDate = formatDate(order.created_at);
         
         const card = `
@@ -142,8 +142,8 @@ function displayOrderDetails(data){
     if (items.length > 0) {
         itemsHtml = '<div class="order-items-list">';
         $.each(items, function(index, item){
-            const lineTotal = '$' + parseFloat(item.line_total).toFixed(2);
-            const unitPrice = '$' + parseFloat(item.price_at_order).toFixed(2);
+            const lineTotal = 'GH₵' + parseFloat(item.line_total).toFixed(2);
+            const unitPrice = 'GH₵' + parseFloat(item.price_at_order).toFixed(2);
             
             itemsHtml += `
                 <div class="order-item">
@@ -164,7 +164,7 @@ function displayOrderDetails(data){
         itemsHtml = '<p class="no-items">No items in this order.</p>';
     }
 
-    const totalAmount = '$' + parseFloat(data.calculated_total).toFixed(2);
+    const totalAmount = 'GH₵' + parseFloat(data.calculated_total).toFixed(2);
     const statusLabel = getStatusLabel(order.status);
     const statusClass = getStatusClass(order.status);
 
