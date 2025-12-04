@@ -2,7 +2,7 @@ BlueCollar E-Commerce Platform
 
 BlueCollar is a digital ecosystem designed to modernize the procurement of tools and materials for blue-collar workers in Ghana and West Africa. By connecting competent artisans (buyers) with verified suppliers, the platform eliminates supply chain inefficiencies and ensures access to genuine, high-quality equipment.
 
-Find on youtube how to use: 
+More Info on YouTube: https://www.youtube.com/watch?v=0i6_5okV3YQ
 
 📖 About the Project
 
