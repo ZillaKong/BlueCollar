@@ -98,3 +98,21 @@ Contributions are welcome! Please fork the repository and create a pull request 
 📄 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+
+
+Mermaid AI diagram
+sequenceDiagram
+    actor Ama as "Supplier (Ama)"
+    actor Admin
+    participant System as "BlueCollar Platform"
+
+    Ama->>System: Register Account
+    Admin->>System: Verify Documents
+    System-->>Ama: Account Activated
+    Ama->>System: Update Storefront Branding
+    Ama->>System: Add Product (Drills, Stock: 50)
+    Note over System: Buyer places order
+    System->>Ama: Notification: New Order
+    Ama->>System: Update Status: "Ready for Pickup"
+    Ama->>System: View Monthly Analytics
